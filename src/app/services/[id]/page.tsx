@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
 import ReviewsList from '@/components/ReviewsList';
+import DirectImage from '@/components/ui/DirectImage';
 
 export default function ServiceDetailPage() {
   const params = useParams();
@@ -97,11 +97,10 @@ export default function ServiceDetailPage() {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="relative h-96 overflow-hidden rounded-lg">
               {service.image_url ? (
-                <Image
+                <DirectImage
                   src={service.image_url}
                   alt={service.name}
-                  fill
-                  className="object-cover"
+                  className="object-cover w-full h-full"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">

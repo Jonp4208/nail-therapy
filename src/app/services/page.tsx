@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
+import DirectImage from '@/components/ui/DirectImage';
 
 interface ServiceCategory {
   id: string;
@@ -127,11 +127,10 @@ export default function ServicesPage() {
               <Card key={service.id} className="overflow-hidden">
                 <div className="aspect-w-16 aspect-h-9 relative h-48">
                   {service.image_url ? (
-                    <Image
+                    <DirectImage
                       src={service.image_url}
                       alt={service.name}
-                      fill
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -185,11 +184,10 @@ export default function ServicesPage() {
               <Card key={service.id} className="overflow-hidden">
                 <div className="aspect-w-16 aspect-h-9 relative h-48">
                   {service.image_url ? (
-                    <Image
+                    <DirectImage
                       src={service.image_url}
                       alt={service.name}
-                      fill
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -243,11 +241,10 @@ export default function ServicesPage() {
               <Card key={service.id} className="overflow-hidden">
                 <div className="aspect-w-16 aspect-h-9 relative h-48">
                   {service.image_url ? (
-                    <Image
+                    <DirectImage
                       src={service.image_url}
                       alt={service.name}
-                      fill
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
