@@ -1,13 +1,30 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import StripeProvider from '@/components/payment/StripeProvider';
 import PaymentForm from '@/components/payment/PaymentForm';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
 
-export default function PaymentPage() {
+// Loading fallback component
+function PaymentLoading() {
+  return (
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Loading...</h2>
+          <p className="mt-4 text-lg leading-8 text-gray-600">
+            Please wait while we prepare your payment details.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Client component that uses useSearchParams
+function PaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { supabase, user, loading: authLoading } = useSupabaseContext();
@@ -221,5 +238,14 @@ export default function PaymentPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component that uses Suspense
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<PaymentLoading />}>
+      <PaymentContent />
+    </Suspense>
   );
 }
