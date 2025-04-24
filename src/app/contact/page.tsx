@@ -34,7 +34,7 @@ export default function ContactPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                   </svg>
                 </dt>
-                <dd>123 Nail Avenue<br />Beauty Town, BT 12345</dd>
+                <dd>Calhoun, Georgia 30701</dd>
               </div>
               <div className="flex gap-x-4">
                 <dt className="flex-none">
@@ -45,7 +45,7 @@ export default function ContactPage() {
                 </dt>
                 <dd>
                   <a className="hover:text-pink-600" href="tel:+1-555-123-4567">
-                    +1 (555) 123-4567
+                    +1 706-200-2663
                   </a>
                 </dd>
               </div>
@@ -57,8 +57,8 @@ export default function ContactPage() {
                   </svg>
                 </dt>
                 <dd>
-                  <a className="hover:text-pink-600" href="mailto:info@nailsalon.com">
-                    info@nailsalon.com
+                  <a className="hover:text-pink-600" href="mailto:nailtherapybyagustina@gmail.com">
+                    nailtherapybyagustina@gmail.com
                   </a>
                 </dd>
               </div>
@@ -125,12 +125,19 @@ export default function ContactPage() {
         </div>
 
         {/* Map */}
-        <div className="mt-16 overflow-hidden rounded-lg bg-gray-200 h-96">
+        <div className="mt-16 overflow-hidden rounded-lg h-96">
           <div className="h-full w-full">
-            {/* In a real application, you would embed a Google Map here */}
-            <div className="flex h-full items-center justify-center">
-              <p className="text-gray-500">Map will be displayed here</p>
-            </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52626.203037387!2d-84.98248867832032!3d34.50290400000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8860753e6c469d49%3A0x1e3b0f3a3c48c4a!2sCalhoun%2C%20GA%2030701!5e0!3m2!1sen!2sus!4v1714073731066!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Map of Calhoun, Georgia"
+              className="rounded-lg"
+            />
           </div>
         </div>
       </div>
