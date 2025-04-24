@@ -7,7 +7,7 @@ import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import Textarea from '@/components/ui/textarea';
+import Textarea from '@/components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/SelectNew';
 import { Switch } from '@/components/ui/Switch';
 import { toast } from '@/components/ui/use-toast';
