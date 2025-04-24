@@ -5,16 +5,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
+        hostname: '*',
+        pathname: '**',
       },
       {
-        protocol: 'https',
-        hostname: '**',
-        pathname: '/**',
+        protocol: 'http',
+        hostname: '*',
+        pathname: '**',
       },
     ],
     domains: ['images.unsplash.com', 'rzezoxuqhavwwvwfozip.supabase.co'],
+    unoptimized: true,
   },
 };
 
