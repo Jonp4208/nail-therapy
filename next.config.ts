@@ -2,20 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*',
-        pathname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '*',
-        pathname: '**',
-      },
-    ],
-    domains: ['images.unsplash.com', 'rzezoxuqhavwwvwfozip.supabase.co'],
-    unoptimized: true,
+    domains: ['images.unsplash.com'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    minimumCacheTTL: 60,
+    formats: ['image/webp'],
+  },
+  experimental: {
+    images: {
+      allowFutureImage: true,
+    },
   },
 };
 

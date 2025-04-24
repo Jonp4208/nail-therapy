@@ -1,8 +1,8 @@
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import DirectImage from "@/components/ui/DirectImage";
 
 export default function Home() {
   return (
@@ -33,13 +33,12 @@ export default function Home() {
           </div>
         </div>
         <div className="bg-gray-50 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <Image
+          <DirectImage
             className="aspect-[3/2] object-cover lg:aspect-auto lg:h-full lg:w-full"
             src="https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=800&q=80"
             alt="Nail salon services"
             width={1200}
             height={800}
-            priority
           />
         </div>
       </div>
@@ -226,7 +225,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <Image
+              <DirectImage
                 src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
                 alt="Nail salon professional workspace"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10"

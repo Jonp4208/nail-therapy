@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import Image from 'next/image';
+import DirectImage from '@/components/ui/DirectImage';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
 
 interface GalleryItem {
@@ -134,13 +134,12 @@ export default function GalleryPage() {
             {galleryItems.map((item) => (
               <div key={item.id} className="group relative overflow-hidden rounded-lg">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200">
-                  <Image
+                  <DirectImage
                     src={item.image_url}
                     alt={item.title}
                     width={600}
                     height={600}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
-                    unoptimized
                   />
                 </div>
                 <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent p-6 opacity-0 group-hover:opacity-100 transition-opacity">
