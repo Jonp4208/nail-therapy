@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useSupabaseContext } from '@/context/SupabaseProvider';
 import CalendarLinks from '@/components/CalendarLinks';
 
-export default function BookingConfirmationPage() {
+// Create a client component that uses useSearchParams
+function BookingConfirmationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { supabase } = useSupabaseContext();
@@ -165,5 +166,30 @@ export default function BookingConfirmationPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function BookingConfirmationLoading() {
+  return (
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Loading...</h2>
+          <p className="mt-4 text-lg leading-8 text-gray-600">
+            Please wait while we fetch your booking details.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component that uses Suspense
+export default function BookingConfirmationPage() {
+  return (
+    <Suspense fallback={<BookingConfirmationLoading />}>
+      <BookingConfirmationContent />
+    </Suspense>
   );
 }
