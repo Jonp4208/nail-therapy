@@ -17,7 +17,7 @@ const supabaseAdmin = createClient(
 // Create a new appointment
 export async function POST(request: Request) {
   try {
-    const supabase = createServerSupabaseClient();
+    const supabase = await createServerSupabaseClient();
 
     // Get user session
     const { data: { session } } = await supabase.auth.getSession();
@@ -126,7 +126,7 @@ export async function POST(request: Request) {
 // Get all appointments for the current user
 export async function GET(request: Request) {
   try {
-    const supabase = createServerSupabaseClient();
+    const supabase = await createServerSupabaseClient();
 
     // Get user session
     const { data: { session } } = await supabase.auth.getSession();
