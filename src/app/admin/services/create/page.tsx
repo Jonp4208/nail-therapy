@@ -13,12 +13,13 @@ import { Switch } from '@/components/ui/Switch';
 import { toast } from '@/components/ui/use-toast';
 import { Database } from '@/types/database.types';
 import Link from 'next/link';
+import { useSupabaseContext } from '@/context/SupabaseProvider';
 
 type ServiceCategory = Database['public']['Tables']['service_categories']['Row'];
 
 export default function CreateServicePage() {
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const { supabase, user, loading: authLoading } = useSupabaseContext();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +38,6 @@ export default function CreateServicePage() {
 
   // Check if user is admin
   const [isAdmin, setIsAdmin] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     // Don't check admin status if still loading auth state
