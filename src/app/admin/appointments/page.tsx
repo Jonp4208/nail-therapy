@@ -313,99 +313,83 @@ export default function AppointmentsPage() {
           </div>
 
           {filteredAppointments.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-slate-200">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Client
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider hidden sm:table-cell">
-                      Service
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider hidden md:table-cell">
-                      Time
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-slate-200">
-                  {filteredAppointments.map((appointment) => (
-                    <tr key={appointment.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</div>
-                        <div className="text-xs text-slate-500 md:hidden">{appointment.services?.name || 'Unknown'}</div>
-                        <div className="text-xs text-slate-500 sm:hidden">{format(parseISO(appointment.appointment_date), 'MMM d')} at {formatTime(appointment.appointment_time)}</div>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap hidden sm:table-cell">
-                        <div className="text-sm text-slate-900">{appointment.services?.name || 'Unknown'}</div>
-                        <div className="text-xs text-slate-500">${((appointment.services?.price || 0) / 100).toFixed(2)}</div>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="text-sm text-slate-900">{format(parseISO(appointment.appointment_date), 'MMM d, yyyy')}</div>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap hidden md:table-cell">
-                        <div className="text-sm text-slate-900">{formatTime(appointment.appointment_time)}</div>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          appointment.status === 'confirmed'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : appointment.status === 'completed'
-                            ? 'bg-indigo-100 text-indigo-800'
-                            : appointment.status === 'cancelled'
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}>
-                          {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex flex-wrap justify-end gap-1">
-                          {appointment.status === 'pending' && (
-                            <Button
-                              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-1 px-2 rounded"
-                              size="sm"
-                              onClick={() => handleConfirmAppointment(appointment.id)}
-                            >
-                              Confirm
-                            </Button>
-                          )}
-                          {appointment.status === 'confirmed' && (
-                            <Button
-                              className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs py-1 px-2 rounded"
-                              size="sm"
-                              onClick={() => handleCompleteAppointment(appointment.id)}
-                            >
-                              Complete
-                            </Button>
-                          )}
-                          <Link href={`/admin/appointments/${appointment.id}`}>
-                            <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-1 px-2 rounded" size="sm">Edit</Button>
-                          </Link>
-                          {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
-                            <Button
-                              className="bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs py-1 px-2 rounded"
-                              size="sm"
-                              onClick={() => handleCancelAppointment(appointment.id)}
-                            >
-                              Cancel
-                            </Button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+              {filteredAppointments.map((appointment) => (
+                <div key={appointment.id} className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-lg font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</h3>
+                        <p className="text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</p>
+                      </div>
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        appointment.status === 'confirmed'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : appointment.status === 'completed'
+                          ? 'bg-indigo-100 text-indigo-800'
+                          : appointment.status === 'cancelled'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center text-sm text-slate-500 mb-2">
+                      <span className="font-medium">{format(parseISO(appointment.appointment_date), 'MMM d, yyyy')}</span>
+                      <span className="mx-1">•</span>
+                      <span>{formatTime(appointment.appointment_time)}</span>
+                    </div>
+
+                    {appointment.services?.price && (
+                      <div className="text-sm text-slate-500 mb-4">
+                        ${((appointment.services.price) / 100).toFixed(2)}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+                    <div className="flex space-x-2">
+                      <Link href={`/admin/appointments/${appointment.id}`}>
+                        <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-1 px-3 rounded" size="sm">
+                          Edit
+                        </Button>
+                      </Link>
+
+                      {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
+                        <Button
+                          className="bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs py-1 px-3 rounded"
+                          size="sm"
+                          onClick={() => handleCancelAppointment(appointment.id)}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+
+                    <div>
+                      {appointment.status === 'pending' && (
+                        <Button
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-1 px-3 rounded"
+                          size="sm"
+                          onClick={() => handleConfirmAppointment(appointment.id)}
+                        >
+                          Confirm
+                        </Button>
+                      )}
+                      {appointment.status === 'confirmed' && (
+                        <Button
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs py-1 px-3 rounded"
+                          size="sm"
+                          onClick={() => handleCompleteAppointment(appointment.id)}
+                        >
+                          Complete
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="text-center py-12">
