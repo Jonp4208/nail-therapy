@@ -169,6 +169,38 @@ export interface Database {
           category?: 'nails' | 'waxing' | 'eyebrows'
         }
       }
+      blackout_dates: {
+        Row: {
+          id: string
+          created_at: string
+          start_date: string
+          end_date: string
+          all_day: boolean
+          start_time: string | null
+          end_time: string | null
+          reason: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          start_date: string
+          end_date: string
+          all_day?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          reason?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          start_date?: string
+          end_date?: string
+          all_day?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          reason?: string | null
+        }
+      }
     }
   }
 }

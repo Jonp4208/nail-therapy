@@ -548,7 +548,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
             <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               <div className="p-1 bg-gradient-to-r from-slate-600 to-slate-700"></div>
               <div className="p-4 sm:p-6">
@@ -569,6 +569,31 @@ export default function AdminDashboardPage() {
                   </Link>
                   <Link href="/admin/appointments" className="text-slate-700 hover:text-slate-900 font-medium text-center sm:text-left">
                     View All →
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
+              <div className="p-1 bg-gradient-to-r from-pink-500 to-pink-600"></div>
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center mb-3 sm:mb-4">
+                  <div className="p-2 bg-pink-50 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="ml-3 text-lg sm:text-xl font-bold text-gray-900">Blackout Dates</h3>
+                </div>
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Manage dates and times when you're unavailable for appointments.</p>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+                  <Link href="/admin/blackout-dates" className="w-full sm:w-auto">
+                    <Button className="bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full sm:w-auto">
+                      Manage Blackouts
+                    </Button>
+                  </Link>
+                  <Link href="/admin/blackout-dates/create" className="text-pink-600 hover:text-pink-800 font-medium text-center sm:text-left">
+                    Add New →
                   </Link>
                 </div>
               </div>

@@ -166,9 +166,70 @@ export default function CreateAppointmentPage() {
 
   useEffect(() => {
     // When date changes, update available times
-    setAvailableTimes(generateTimeSlots());
+    const checkAvailability = async () => {
+      try {
+        const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+
+        // Get booked appointments for the selected date
+        const { data: bookedSlots, error } = await supabase
+          .from('appointments')
+          .select('appointment_time')
+          .eq('appointment_date', formattedDate)
+          .in('status', ['pending', 'confirmed']);
+
+        if (error) {
+          throw error;
+        }
+
+        // Get blackout dates that include this date
+        const { data: blackoutDates, error: blackoutError } = await supabase
+          .from('blackout_dates')
+          .select('*')
+          .lte('start_date', formattedDate)
+          .gte('end_date', formattedDate);
+
+        if (blackoutError) {
+          throw blackoutError;
+        }
+
+        // Start with all default time slots
+        let availableSlots = generateTimeSlots();
+
+        // Filter out booked time slots
+        if (bookedSlots && bookedSlots.length > 0) {
+          const bookedTimes = bookedSlots.map(slot => slot.appointment_time);
+          availableSlots = availableSlots.filter(
+            slot => !bookedTimes.includes(slot)
+          );
+        }
+
+        // Filter out blackout times
+        if (blackoutDates && blackoutDates.length > 0) {
+          // Check each blackout date
+          blackoutDates.forEach(blackout => {
+            if (blackout.all_day) {
+              // If it's an all-day blackout, remove all time slots
+              availableSlots = [];
+            } else if (blackout.start_time && blackout.end_time) {
+              // Remove time slots that fall within the blackout time range
+              availableSlots = availableSlots.filter(slot => {
+                return slot < blackout.start_time || slot >= blackout.end_time;
+              });
+            }
+          });
+        }
+
+        setAvailableTimes(availableSlots);
+      } catch (err) {
+        console.error('Error checking availability:', err);
+        // Fallback to all time slots if there's an error
+        setAvailableTimes(generateTimeSlots());
+      }
+    };
+
+    checkAvailability();
     setSelectedTime('');
-  }, [selectedDate]);
+  }, [selectedDate, supabase]);
 
   // Handle client creation from modal
   const handleClientCreated = (newClientId: string, clientName: string) => {
