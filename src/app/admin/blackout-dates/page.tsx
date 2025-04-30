@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { format, parseISO, isWithinInterval } from 'date-fns';
 import { Calendar, Plus, Trash2, Edit } from 'lucide-react';
-import { useSupabaseContext } from '@/contexts/SupabaseContext';
+import { useSupabaseContext } from '@/context/SupabaseProvider';
 import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { toast } from '@/components/ui/use-toast';
@@ -16,7 +16,7 @@ type BlackoutDate = Database['public']['Tables']['blackout_dates']['Row'];
 export default function BlackoutDatesPage() {
   const router = useRouter();
   const { supabase, user, loading: authLoading } = useSupabaseContext();
-  
+
   const [blackoutDates, setBlackoutDates] = useState<BlackoutDate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

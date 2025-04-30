@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { cn } from '@/lib/utils';
-import { createSupabaseClient } from '@/lib/supabase';
+import { useSupabaseContext } from '@/context/SupabaseProvider';
 import { isWithinInterval, parseISO } from 'date-fns';
 
 type ValuePiece = Date | null;
@@ -34,11 +34,15 @@ const ReactCalendar: React.FC<ReactCalendarProps> = ({
   const [blackoutDates, setBlackoutDates] = useState<BlackoutDate[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Get Supabase client from context
+  const { supabase } = useSupabaseContext();
+
   // Fetch blackout dates
   useEffect(() => {
     const fetchBlackoutDates = async () => {
       try {
-        const supabase = createSupabaseClient();
+        if (!supabase) return;
+
         const { data, error } = await supabase
           .from('blackout_dates')
           .select('id, start_date, end_date');
@@ -57,7 +61,7 @@ const ReactCalendar: React.FC<ReactCalendarProps> = ({
     };
 
     fetchBlackoutDates();
-  }, []);
+  }, [supabase]);
 
   // Check if a date is within any blackout period
   const isBlackoutDate = (date: Date) => {

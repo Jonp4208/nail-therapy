@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { DateRange } from 'react-day-picker';
 import { format, parseISO } from 'date-fns';
-import { useSupabaseContext } from '@/contexts/SupabaseContext';
+import { useSupabaseContext } from '@/context/SupabaseProvider';
 import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import Textarea from '@/components/ui/Textarea';
@@ -20,14 +20,14 @@ type BlackoutDate = Database['public']['Tables']['blackout_dates']['Row'];
 export default function EditBlackoutDatePage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { supabase, user, loading: authLoading } = useSupabaseContext();
-  
+
   const [blackoutDate, setBlackoutDate] = useState<BlackoutDate | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [allDay, setAllDay] = useState(true);
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [reason, setReason] = useState('');
-  
+
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +95,7 @@ export default function EditBlackoutDatePage({ params }: { params: { id: string 
       }
 
       setBlackoutDate(data);
-      
+
       // Set form values
       setDateRange({
         from: parseISO(data.start_date),

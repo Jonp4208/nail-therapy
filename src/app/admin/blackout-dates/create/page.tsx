@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
-import { useSupabaseContext } from '@/contexts/SupabaseContext';
+import { useSupabaseContext } from '@/context/SupabaseProvider';
 import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import Textarea from '@/components/ui/Textarea';
@@ -17,7 +17,7 @@ import TimeRangePicker from '@/components/ui/TimeRangePicker';
 export default function CreateBlackoutDatePage() {
   const router = useRouter();
   const { supabase, user, loading: authLoading } = useSupabaseContext();
-  
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
@@ -26,7 +26,7 @@ export default function CreateBlackoutDatePage() {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [reason, setReason] = useState('');
-  
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
