@@ -59,7 +59,15 @@ const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
 }) => {
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children as React.ReactElement<any>, {
-      onClick,
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        onClick?.();
+        // Also call the original onClick if it exists
+        if (typeof children.props.onClick === 'function') {
+          children.props.onClick(e);
+        }
+      },
+      type: children.props.type || 'button', // Ensure button has type
     });
   }
 

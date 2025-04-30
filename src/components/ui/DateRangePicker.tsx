@@ -30,6 +30,16 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   className,
   disabled = false,
 }) => {
+  const [open, setOpen] = React.useState(false);
+
+  // Handle date selection
+  const handleSelect = (newValue: DateRange | undefined) => {
+    onChange(newValue);
+    if (newValue?.from && newValue?.to) {
+      setOpen(false); // Close the popover when a complete range is selected
+    }
+  };
+
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
@@ -37,7 +47,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           {label}
         </label>
       )}
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -65,11 +75,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-            initialFocus
             mode="range"
             defaultMonth={value?.from}
             selected={value}
-            onSelect={onChange}
+            onSelect={handleSelect}
             numberOfMonths={2}
           />
         </PopoverContent>

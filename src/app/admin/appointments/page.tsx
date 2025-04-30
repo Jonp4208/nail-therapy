@@ -9,6 +9,8 @@ import Input from '@/components/ui/Input';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
 import { Search, Calendar, Plus, Filter } from 'lucide-react';
 import { Database } from '@/types/database.types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
+import AdminGoogleStyleCalendar from '@/components/admin/AdminGoogleStyleCalendar'
 
 type AppointmentWithDetails = Database['public']['Tables']['appointments']['Row'] & {
   services: {
@@ -164,19 +166,20 @@ export default function AppointmentsPage() {
     try {
       const { error } = await supabase
         .from('appointments')
-        .update({ status: 'cancelled' })
-        .eq('id', appointmentId);
+        .delete()
+        .eq('id', appointmentId)
 
       if (error) {
-        throw error;
+        throw error
       }
 
-      await fetchAppointments();
+      // Remove from local state immediately
+      setAppointments(prev => prev.filter(a => a.id !== appointmentId))
     } catch (err: any) {
-      console.error('Error cancelling appointment:', err);
-      setError(err.message);
+      console.error('Error deleting appointment:', err)
+      setError(err.message)
     }
-  };
+  }
 
   const handleCompleteAppointment = async (appointmentId: string) => {
     try {
@@ -259,159 +262,151 @@ export default function AppointmentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-8 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Appointments</h1>
-            <p className="mt-2 text-gray-600">Manage all your salon appointments</p>
-          </div>
-          <div className="mt-4 sm:mt-0">
-            <Link href="/admin">
-              <Button variant="outline" className="mr-2">Back to Dashboard</Button>
-            </Link>
-            <Link href="/admin/appointments/create">
-              <Button className="bg-pink-600 hover:bg-pink-700 text-white">
-                <Plus className="h-4 w-4 mr-2" />
-                New Appointment
-              </Button>
-            </Link>
-          </div>
-        </div>
+    <div className="container mx-auto py-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Appointments</h1>
+        <Button onClick={() => setShowNewAppointmentDialog(true)}>
+          New Appointment
+        </Button>
+      </div>
 
-        {error && (
-          <div className="mb-6 p-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200">
-            {error}
-          </div>
-        )}
-
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-          <div className="p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="relative w-full sm:max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
-              <Input
-                placeholder="Search by client or service"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 border-slate-300 focus:border-slate-400 focus:ring-slate-400 w-full"
-              />
-            </div>
-            <div className="flex items-center space-x-2 w-full sm:w-auto">
-              <Filter className="text-slate-400" size={18} />
-              <select
-                value={statusFilter || ''}
-                onChange={(e) => setStatusFilter(e.target.value || null)}
-                className="border border-slate-300 rounded-md text-sm py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400"
-              >
-                <option value="">All Statuses</option>
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-          </div>
-
-          {filteredAppointments.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-              {filteredAppointments.map((appointment) => (
-                <div key={appointment.id} className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-                  <div className="p-4">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h3 className="text-lg font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</h3>
-                        <p className="text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</p>
-                      </div>
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        appointment.status === 'confirmed'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : appointment.status === 'completed'
-                          ? 'bg-indigo-100 text-indigo-800'
-                          : appointment.status === 'cancelled'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}>
-                        {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center text-sm text-slate-500 mb-2">
-                      <span className="font-medium">{format(parseISO(appointment.appointment_date), 'MMM d, yyyy')}</span>
-                      <span className="mx-1">•</span>
-                      <span>{formatTime(appointment.appointment_time)}</span>
-                    </div>
-
-                    {appointment.services?.price && (
-                      <div className="text-sm text-slate-500 mb-4">
-                        ${((appointment.services.price) / 100).toFixed(2)}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
-                    <div className="flex space-x-2">
-                      <Link href={`/admin/appointments/${appointment.id}`}>
-                        <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-1 px-3 rounded" size="sm">
-                          Edit
-                        </Button>
-                      </Link>
-
-                      {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
-                        <Button
-                          className="bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs py-1 px-3 rounded"
-                          size="sm"
-                          onClick={() => handleCancelAppointment(appointment.id)}
-                        >
-                          Cancel
-                        </Button>
-                      )}
-                    </div>
-
-                    <div>
-                      {appointment.status === 'pending' && (
-                        <Button
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-1 px-3 rounded"
-                          size="sm"
-                          onClick={() => handleConfirmAppointment(appointment.id)}
-                        >
-                          Confirm
-                        </Button>
-                      )}
-                      {appointment.status === 'confirmed' && (
-                        <Button
-                          className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs py-1 px-3 rounded"
-                          size="sm"
-                          onClick={() => handleCompleteAppointment(appointment.id)}
-                        >
-                          Complete
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Calendar className="h-12 w-12 mx-auto text-slate-400" />
-              <h3 className="mt-2 text-lg font-medium text-slate-900">No appointments found</h3>
-              <p className="mt-1 text-slate-500">
-                {searchQuery || statusFilter
-                  ? 'Try adjusting your search or filter criteria'
-                  : 'Get started by creating a new appointment'}
-              </p>
-              <div className="mt-6">
-                <Link href="/admin/appointments/create">
-                  <Button className="bg-pink-600 hover:bg-pink-700 text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Appointment
-                  </Button>
-                </Link>
+      <Tabs defaultValue="calendar" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="list">List View</TabsTrigger>
+          <TabsTrigger value="calendar">Calendar View</TabsTrigger>
+        </TabsList>
+        <TabsContent value="list">
+          <div className="bg-white rounded-lg shadow">
+            <div className="p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="relative w-full sm:max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+                <Input
+                  placeholder="Search by client or service"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 border-slate-300 focus:border-slate-400 focus:ring-slate-400 w-full"
+                />
+              </div>
+              <div className="flex items-center space-x-2 w-full sm:w-auto">
+                <Filter className="text-slate-400" size={18} />
+                <select
+                  value={statusFilter || ''}
+                  onChange={(e) => setStatusFilter(e.target.value || null)}
+                  className="border border-slate-300 rounded-md text-sm py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400"
+                >
+                  <option value="">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            {filteredAppointments.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                {filteredAppointments.map((appointment) => (
+                  <div key={appointment.id} className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="text-lg font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</h3>
+                          <p className="text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</p>
+                        </div>
+                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          appointment.status === 'confirmed'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : appointment.status === 'completed'
+                            ? 'bg-indigo-100 text-indigo-800'
+                            : appointment.status === 'cancelled'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center text-sm text-slate-500 mb-2">
+                        <span className="font-medium">{format(parseISO(appointment.appointment_date), 'MMM d, yyyy')}</span>
+                        <span className="mx-1">•</span>
+                        <span>{formatTime(appointment.appointment_time)}</span>
+                      </div>
+
+                      {appointment.services?.price && (
+                        <div className="text-sm text-slate-500 mb-4">
+                          ${((appointment.services.price) / 100).toFixed(2)}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+                      <div className="flex space-x-2">
+                        <Link href={`/admin/appointments/${appointment.id}`}>
+                          <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-1 px-3 rounded" size="sm">
+                            Edit
+                          </Button>
+                        </Link>
+
+                        {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
+                          <Button
+                            className="bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs py-1 px-3 rounded"
+                            size="sm"
+                            onClick={() => handleCancelAppointment(appointment.id)}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
+
+                      <div>
+                        {appointment.status === 'pending' && (
+                          <Button
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-1 px-3 rounded"
+                            size="sm"
+                            onClick={() => handleConfirmAppointment(appointment.id)}
+                          >
+                            Confirm
+                          </Button>
+                        )}
+                        {appointment.status === 'confirmed' && (
+                          <Button
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs py-1 px-3 rounded"
+                            size="sm"
+                            onClick={() => handleCompleteAppointment(appointment.id)}
+                          >
+                            Complete
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <Calendar className="h-12 w-12 mx-auto text-slate-400" />
+                <h3 className="mt-2 text-lg font-medium text-slate-900">No appointments found</h3>
+                <p className="mt-1 text-slate-500">
+                  {searchQuery || statusFilter
+                    ? 'Try adjusting your search or filter criteria'
+                    : 'Get started by creating a new appointment'}
+                </p>
+                <div className="mt-6">
+                  <Link href="/admin/appointments/create">
+                    <Button className="bg-pink-600 hover:bg-pink-700 text-white">
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Appointment
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+        <TabsContent value="calendar">
+          <AdminGoogleStyleCalendar />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
