@@ -652,24 +652,25 @@ export default function AdminDashboardPage() {
                 <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <div className="inline-block min-w-full align-middle">
                     <table className="min-w-full divide-y divide-slate-200">
-                      <thead>
-                        <tr className="border-b border-slate-200">
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Client</th>
-                          <th scope="col" className="hidden sm:table-cell px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Service</th>
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Time</th>
-                          <th scope="col" className="hidden md:table-cell px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Phone</th>
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Status</th>
-                          <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-slate-700 uppercase tracking-wider">Actions</th>
+                      <thead className="bg-slate-50">
+                        <tr>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Client</th>
+                          <th scope="col" className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Service</th>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Time</th>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Status</th>
+                          <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-slate-700 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-200">
+                      <tbody className="bg-white divide-y divide-slate-200">
                         {todayAppointments.map((appointment) => (
                           <tr key={appointment.id} className="hover:bg-slate-50 transition-colors">
-                            <td className="px-3 py-4 whitespace-nowrap text-sm text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</td>
-                            <td className="hidden sm:table-cell px-3 py-4 whitespace-nowrap text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</td>
-                            <td className="px-3 py-4 whitespace-nowrap text-sm text-slate-600">{formatTime(appointment.appointment_time)}</td>
-                            <td className="hidden md:table-cell px-3 py-4 whitespace-nowrap text-sm text-slate-600">{appointment.profiles?.phone || 'N/A'}</td>
-                            <td className="px-3 py-4 whitespace-nowrap">
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</div>
+                              <div className="text-xs text-slate-500 sm:hidden">{appointment.services?.name || 'Unknown'}</div>
+                            </td>
+                            <td className="hidden sm:table-cell px-4 py-4 whitespace-nowrap text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</td>
+                            <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-600">{formatTime(appointment.appointment_time)}</td>
+                            <td className="px-4 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                                 appointment.status === 'confirmed'
                                   ? 'bg-emerald-100 text-emerald-800'
@@ -682,7 +683,7 @@ export default function AdminDashboardPage() {
                                 {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                               </span>
                             </td>
-                            <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <div className="flex flex-wrap justify-end gap-1">
                                 {appointment.status === 'pending' && (
                                   <Button
@@ -763,24 +764,29 @@ export default function AdminDashboardPage() {
                 <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <div className="inline-block min-w-full align-middle">
                     <table className="min-w-full divide-y divide-slate-200">
-                      <thead>
-                        <tr className="border-b border-slate-200">
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Client</th>
-                          <th scope="col" className="hidden sm:table-cell px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Service</th>
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Date</th>
-                          <th scope="col" className="hidden sm:table-cell px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Time</th>
-                          <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Status</th>
-                          <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-slate-700 uppercase tracking-wider">Actions</th>
+                      <thead className="bg-slate-50">
+                        <tr>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Client</th>
+                          <th scope="col" className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Service</th>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Date</th>
+                          <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">Status</th>
+                          <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-slate-700 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-200">
+                      <tbody className="bg-white divide-y divide-slate-200">
                         {upcomingAppointments.map((appointment) => (
                           <tr key={appointment.id} className="hover:bg-slate-50 transition-colors">
-                            <td className="px-3 py-4 whitespace-nowrap text-sm text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</td>
-                            <td className="hidden sm:table-cell px-3 py-4 whitespace-nowrap text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</td>
-                            <td className="px-3 py-4 whitespace-nowrap text-sm text-slate-600">{format(parseISO(appointment.appointment_date), 'MMM d')}</td>
-                            <td className="hidden sm:table-cell px-3 py-4 whitespace-nowrap text-sm text-slate-600">{formatTime(appointment.appointment_time)}</td>
-                            <td className="px-3 py-4 whitespace-nowrap">
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-slate-900">{appointment.profiles?.full_name || 'Unknown'}</div>
+                              <div className="text-xs text-slate-500 sm:hidden">{appointment.services?.name || 'Unknown'}</div>
+                              <div className="text-xs text-slate-500 sm:hidden">{formatTime(appointment.appointment_time)}</div>
+                            </td>
+                            <td className="hidden sm:table-cell px-4 py-4 whitespace-nowrap text-sm text-slate-600">{appointment.services?.name || 'Unknown'}</td>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="text-sm text-slate-900">{format(parseISO(appointment.appointment_date), 'MMM d, yyyy')}</div>
+                              <div className="text-xs text-slate-500 hidden sm:block">{formatTime(appointment.appointment_time)}</div>
+                            </td>
+                            <td className="px-4 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                                 appointment.status === 'confirmed'
                                   ? 'bg-emerald-100 text-emerald-800'
@@ -791,7 +797,7 @@ export default function AdminDashboardPage() {
                                 {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                               </span>
                             </td>
-                            <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <div className="flex flex-wrap justify-end gap-1">
                                 {appointment.status === 'pending' && (
                                   <Button
