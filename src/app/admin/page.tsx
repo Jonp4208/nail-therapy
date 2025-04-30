@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { format, parseISO } from 'date-fns';
+import { Plus, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useSupabaseContext } from '@/context/SupabaseProvider';
@@ -551,7 +552,7 @@ export default function AdminDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
             <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               <div className="p-1 bg-gradient-to-r from-slate-600 to-slate-700"></div>
-              <div className="p-4 sm:p-5 lg:p-6">
+              <div className="p-4 sm:p-5 lg:p-6 flex flex-col min-h-[220px]">
                 <div className="flex items-center mb-3 sm:mb-4">
                   <div className="p-2 bg-slate-100 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -561,14 +562,21 @@ export default function AdminDashboardPage() {
                   <h3 className="ml-3 text-lg sm:text-xl font-bold text-gray-900">Appointments</h3>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Schedule, manage, and track all client appointments in one place.</p>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
-                  <Link href="/admin/appointments/create" className="w-full sm:w-auto">
-                    <Button className="bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full">
-                      Add Appointment
+                <div className="mt-auto pt-4 flex flex-row justify-between items-center gap-3">
+                  <Link href="/admin/appointments" className="flex-1">
+                    <Button variant="outline" className="w-full border border-slate-300 text-slate-700 hover:bg-slate-50 py-2 px-3 rounded-md transition-colors shadow-sm">
+                      <span className="flex items-center justify-center">
+                        View All
+                      </span>
                     </Button>
                   </Link>
-                  <Link href="/admin/appointments" className="text-slate-700 hover:text-slate-900 font-medium text-center sm:text-left whitespace-nowrap">
-                    View All →
+                  <Link href="/admin/appointments/create" className="flex-1">
+                    <Button className="bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-3 rounded-md transition-colors w-full shadow-sm">
+                      <span className="flex items-center justify-center">
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Add
+                      </span>
+                    </Button>
                   </Link>
                 </div>
               </div>
@@ -576,7 +584,7 @@ export default function AdminDashboardPage() {
 
             <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               <div className="p-1 bg-gradient-to-r from-pink-500 to-pink-600"></div>
-              <div className="p-4 sm:p-5 lg:p-6">
+              <div className="p-4 sm:p-5 lg:p-6 flex flex-col min-h-[220px]">
                 <div className="flex items-center mb-3 sm:mb-4">
                   <div className="p-2 bg-pink-50 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -586,14 +594,21 @@ export default function AdminDashboardPage() {
                   <h3 className="ml-3 text-lg sm:text-xl font-bold text-gray-900">Blackout Dates</h3>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Block dates and times when you're unavailable.</p>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
-                  <Link href="/admin/blackout-dates" className="w-full sm:w-auto">
-                    <Button className="bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full">
-                      Manage Blackouts
+                <div className="mt-auto pt-4 flex flex-row justify-between items-center gap-3">
+                  <Link href="/admin/blackout-dates" className="flex-1">
+                    <Button variant="outline" className="w-full border border-pink-300 text-pink-600 hover:bg-pink-50 py-2 px-3 rounded-md transition-colors shadow-sm">
+                      <span className="flex items-center justify-center">
+                        Manage
+                      </span>
                     </Button>
                   </Link>
-                  <Link href="/admin/blackout-dates/create" className="text-pink-600 hover:text-pink-800 font-medium text-center sm:text-left whitespace-nowrap">
-                    Add New →
+                  <Link href="/admin/blackout-dates/create" className="flex-1">
+                    <Button className="bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-3 rounded-md transition-colors w-full shadow-sm">
+                      <span className="flex items-center justify-center">
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Add
+                      </span>
+                    </Button>
                   </Link>
                 </div>
               </div>
@@ -601,7 +616,7 @@ export default function AdminDashboardPage() {
 
             <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               <div className="p-1 bg-gradient-to-r from-indigo-500 to-indigo-600"></div>
-              <div className="p-4 sm:p-5 lg:p-6">
+              <div className="p-4 sm:p-5 lg:p-6 flex flex-col min-h-[220px]">
                 <div className="flex items-center mb-3 sm:mb-4">
                   <div className="p-2 bg-indigo-50 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -611,14 +626,21 @@ export default function AdminDashboardPage() {
                   <h3 className="ml-3 text-lg sm:text-xl font-bold text-gray-900">Services</h3>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Create and manage your salon's service offerings and pricing.</p>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
-                  <Link href="/admin/services" className="w-full sm:w-auto">
-                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full">
-                      Manage Services
+                <div className="mt-auto pt-4 flex flex-row justify-between items-center gap-3">
+                  <Link href="/admin/services" className="flex-1">
+                    <Button variant="outline" className="w-full border border-indigo-300 text-indigo-600 hover:bg-indigo-50 py-2 px-3 rounded-md transition-colors shadow-sm">
+                      <span className="flex items-center justify-center">
+                        Manage
+                      </span>
                     </Button>
                   </Link>
-                  <Link href="/admin/services/create" className="text-indigo-600 hover:text-indigo-800 font-medium text-center sm:text-left whitespace-nowrap">
-                    Add New →
+                  <Link href="/admin/services/create" className="flex-1">
+                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md transition-colors w-full shadow-sm">
+                      <span className="flex items-center justify-center">
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Add
+                      </span>
+                    </Button>
                   </Link>
                 </div>
               </div>
@@ -626,7 +648,7 @@ export default function AdminDashboardPage() {
 
             <div className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               <div className="p-1 bg-gradient-to-r from-slate-500 to-slate-600"></div>
-              <div className="p-4 sm:p-5 lg:p-6">
+              <div className="p-4 sm:p-5 lg:p-6 flex flex-col min-h-[220px]">
                 <div className="flex items-center mb-3 sm:mb-4">
                   <div className="p-2 bg-slate-100 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -636,14 +658,20 @@ export default function AdminDashboardPage() {
                   <h3 className="ml-3 text-lg sm:text-xl font-bold text-gray-900">Clients</h3>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Build and maintain your client directory and contact information.</p>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
-                  <Link href="/admin/clients" className="w-full sm:w-auto">
-                    <Button className="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition-colors w-full">
-                      View Clients
+                <div className="mt-auto pt-4 flex flex-row justify-between items-center gap-3">
+                  <Link href="/admin/clients" className="flex-1">
+                    <Button variant="outline" className="w-full border border-slate-300 text-slate-600 hover:bg-slate-50 py-2 px-3 rounded-md transition-colors shadow-sm">
+                      <span className="flex items-center justify-center">
+                        View All
+                      </span>
                     </Button>
                   </Link>
-                  <Link href="/admin/appointments/create" className="text-slate-600 hover:text-slate-800 font-medium text-center sm:text-left whitespace-nowrap">
-                    Book Client →
+                  <Link href="/admin/appointments/create" className="flex-1">
+                    <Button className="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-3 rounded-md transition-colors w-full shadow-sm">
+                      <span className="flex items-center justify-center">
+                        Book Client
+                      </span>
+                    </Button>
                   </Link>
                 </div>
               </div>
