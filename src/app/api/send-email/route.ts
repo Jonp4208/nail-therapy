@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     // Send the email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Nail Therapy by Agustina <noreply@nailtherapybyagustina.com>',
+      from: 'noreply@nailtherapybyaugustina.com',
       to: [to],
       subject,
       html: htmlContent,

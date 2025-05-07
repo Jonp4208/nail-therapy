@@ -7,14 +7,14 @@ import AppointmentUpdate from '@/emails/AppointmentUpdate';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
-const senderEmail = process.env.SENDER_EMAIL || 'noreply@example.com';
+const senderEmail = process.env.SENDER_EMAIL || 'noreply@nailtherapybyaugustina.com';
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 // Salon information
 const salonInfo = {
-  name: 'Nail Salon',
-  address: '123 Nail Avenue, Beauty Town, BT 12345',
-  phone: '(555) 123-4567',
+  name: 'Nail Therapy by Agustina',
+  address: 'Calhoun, GA',
+  phone: '(555) 123-4567', // Update this with your actual phone number
 };
 
 export interface AppointmentEmailData {
@@ -34,14 +34,14 @@ export interface AppointmentEmailData {
 export async function sendAppointmentConfirmationEmail(data: AppointmentEmailData) {
   try {
     const { customerName, customerEmail, serviceName, appointmentDate, appointmentTime, appointmentId } = data;
-    
+
     // Format date and time for display
     const formattedDate = format(new Date(appointmentDate), 'EEEE, MMMM d, yyyy');
     const formattedTime = format(new Date(`${appointmentDate}T${appointmentTime}`), 'h:mm a');
-    
+
     // Generate dashboard URL
     const dashboardUrl = `${appUrl}/dashboard`;
-    
+
     // Render email HTML
     const html = await renderAsync(
       AppointmentConfirmation({
@@ -56,20 +56,20 @@ export async function sendAppointmentConfirmationEmail(data: AppointmentEmailDat
         dashboardUrl,
       })
     );
-    
+
     // Send email
     const { data: emailData, error } = await resend.emails.send({
-      from: `${salonInfo.name} <${senderEmail}>`,
+      from: senderEmail,
       to: customerEmail,
       subject: `Appointment Confirmation - ${salonInfo.name}`,
       html,
     });
-    
+
     if (error) {
       console.error('Error sending confirmation email:', error);
       return { success: false, error };
     }
-    
+
     return { success: true, data: emailData };
   } catch (error) {
     console.error('Error sending confirmation email:', error);
@@ -83,14 +83,14 @@ export async function sendAppointmentConfirmationEmail(data: AppointmentEmailDat
 export async function sendAppointmentReminderEmail(data: AppointmentEmailData) {
   try {
     const { customerName, customerEmail, serviceName, appointmentDate, appointmentTime, appointmentId } = data;
-    
+
     // Format date and time for display
     const formattedDate = format(new Date(appointmentDate), 'EEEE, MMMM d, yyyy');
     const formattedTime = format(new Date(`${appointmentDate}T${appointmentTime}`), 'h:mm a');
-    
+
     // Generate dashboard URL
     const dashboardUrl = `${appUrl}/dashboard`;
-    
+
     // Render email HTML
     const html = await renderAsync(
       AppointmentReminder({
@@ -105,20 +105,20 @@ export async function sendAppointmentReminderEmail(data: AppointmentEmailData) {
         dashboardUrl,
       })
     );
-    
+
     // Send email
     const { data: emailData, error } = await resend.emails.send({
-      from: `${salonInfo.name} <${senderEmail}>`,
+      from: senderEmail,
       to: customerEmail,
       subject: `Reminder: Your Appointment Tomorrow - ${salonInfo.name}`,
       html,
     });
-    
+
     if (error) {
       console.error('Error sending reminder email:', error);
       return { success: false, error };
     }
-    
+
     return { success: true, data: emailData };
   } catch (error) {
     console.error('Error sending reminder email:', error);
@@ -134,33 +134,33 @@ export async function sendAppointmentUpdateEmail(
   updateType: 'reschedule' | 'cancel' | 'service-change'
 ) {
   try {
-    const { 
-      customerName, 
-      customerEmail, 
-      serviceName, 
-      appointmentDate, 
-      appointmentTime, 
+    const {
+      customerName,
+      customerEmail,
+      serviceName,
+      appointmentDate,
+      appointmentTime,
       appointmentId,
       oldDate,
       oldTime
     } = data;
-    
+
     // Format date and time for display
     const formattedDate = format(new Date(appointmentDate), 'EEEE, MMMM d, yyyy');
     const formattedTime = format(new Date(`${appointmentDate}T${appointmentTime}`), 'h:mm a');
-    
+
     // Format old date and time for display (if provided)
     let formattedOldDate;
     let formattedOldTime;
-    
+
     if (oldDate && oldTime) {
       formattedOldDate = format(new Date(oldDate), 'EEEE, MMMM d, yyyy');
       formattedOldTime = format(new Date(`${oldDate}T${oldTime}`), 'h:mm a');
     }
-    
+
     // Generate dashboard URL
     const dashboardUrl = `${appUrl}/dashboard`;
-    
+
     // Render email HTML
     const html = await renderAsync(
       AppointmentUpdate({
@@ -177,7 +177,7 @@ export async function sendAppointmentUpdateEmail(
         dashboardUrl,
       })
     );
-    
+
     // Determine subject based on update type
     let subject = '';
     if (updateType === 'reschedule') {
@@ -187,20 +187,20 @@ export async function sendAppointmentUpdateEmail(
     } else if (updateType === 'service-change') {
       subject = `Your Appointment Has Been Updated - ${salonInfo.name}`;
     }
-    
+
     // Send email
     const { data: emailData, error } = await resend.emails.send({
-      from: `${salonInfo.name} <${senderEmail}>`,
+      from: senderEmail,
       to: customerEmail,
       subject,
       html,
     });
-    
+
     if (error) {
       console.error('Error sending update email:', error);
       return { success: false, error };
     }
-    
+
     return { success: true, data: emailData };
   } catch (error) {
     console.error('Error sending update email:', error);
